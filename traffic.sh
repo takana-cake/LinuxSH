@@ -1,7 +1,16 @@
 #!/bin/sh
 
 echo "### uptime ###" >> /var/log/daylog_`date +\%Y\%m\%d`.log
-uptime >> /var/log/daylog_`date +\%Y\%m\%d`.log
+
+DAY=`uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 4`
+TIME=`uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 6`
+MIN=`uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 7`
+if [ MIN = "min" ]
+then
+TIME="00:${MIN}"
+fi
+echo "${DAY} Days ${TIME}" >> /var/log/daylog_`date +\%Y\%m\%d`.log
+
 
 echo "### network ###" >> /var/log/daylog_`date +\%Y\%m\%d`.log
 RX=`cat /proc/net/dev | sed -n 4p | tr -s [:space:] | cut -d " " -f 3`
