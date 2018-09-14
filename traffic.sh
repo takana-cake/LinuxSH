@@ -25,5 +25,6 @@ done
 
 echo "${QUOTIENT}.${QUOTIENT_} GB" >> /var/log/daylog_`date +\%Y\%m\%d`.log
 
-#日でわるしょりを入れる
+#日でわるしょりを入れる。再起動したときのことを考える
 #増えたログを消す処理を入れる
+
