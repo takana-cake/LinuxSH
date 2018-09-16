@@ -1,5 +1,7 @@
 #!/bin/sh
 
+date +"%Y/%m/%d %H:%M" >> /var/log/daylog_`date +\%Y\%m\%d`.log
+
 echo "### uptime ###" >> /var/log/daylog_`date +\%Y\%m\%d`.log
 
 DAY=`uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 4`
