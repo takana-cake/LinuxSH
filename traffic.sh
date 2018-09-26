@@ -6,7 +6,7 @@ ECHO="${DATE}"
 
 # リセット日
 RESETDATE=20
-if [ $(( `date +\%-d` )) -eq "27" ]; then
+if [ $(( `date +\%-d` )) -eq $(( RESETDATE )) ]; then
 	echo "${DATE} :reset 0 0 0 0.0"
 fi
 
