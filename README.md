@@ -1,7 +1,9 @@
 # daylog_linux
 
+## 出力
+/var/log/daylog.log
 
 ### traffic.sh
 日ごとのトラフィック量を計算。</br>
 AWSとか月の総通信量制限があるやつ用。</br>
-課金日で定時リセットの必要あり。まだ処理書いてない</br>
+課金開始日でresetする。</br>
