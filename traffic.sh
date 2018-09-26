@@ -7,7 +7,7 @@ ECHO="${DATE}"
 # リセット日
 RESETDATE=20
 if [ $(( `date +\%-d` )) -eq $(( RESETDATE )) ]; then
-	echo "${DATE} :reset 0 0 0 0.0"
+	echo "${DATE}: reset 0 Days: TOTAL 0.0"
 fi
 
 # uptime取得
