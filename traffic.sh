@@ -1,6 +1,7 @@
 #!/bin/sh
 
 LOGFILE="/var/log/daylog.log"
+ONEFILE="/var/log/daylog.one"
 DATE=`date +\%Y\%m\%d`
 ECHO="${DATE}"
 
@@ -62,3 +63,4 @@ done
 ECHO="${ECHO}: TODAY ${TODAY_QUOTIENT}.${TODAY_DECIMAL} GB"
 
 echo $ECHO >> $LOGFILE
+echo $ECHO > $ONEFILE
