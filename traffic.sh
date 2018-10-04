@@ -37,9 +37,9 @@ done
 
 # TOTALTRAFFICを取得
 # 再起動起きてたら前日のTRAFFICを足す
-YESTERDAY_UPTIME=$(( `tail -n 1 /var/log/daylog.log | cut -d " " -f 3` ))
-YESTERDAY_QUOTIENT=$(( `tail -n 1 /var/log/daylog.log | cut -d " " -f 6 | cut -d "." -f 1` ))
-YESTERDAY_DECIMAL=$(( `tail -n 1 /var/log/daylog.log | cut -d " " -f 6 | cut -d "." -f 2` ))
+YESTERDAY_UPTIME=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 3` ))
+YESTERDAY_QUOTIENT=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 6 | cut -d "." -f 1` ))
+YESTERDAY_DECIMAL=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 6 | cut -d "." -f 2` ))
 if [ $((YESTERDAY_UPTIME)) -gt $((UPTIME_DAY)) ]; then
 	TOTAL_tmp=$(( TOTAL_QUOTIENT * 100 + TOTAL_DECIMAL ))
 	YESTERDAY_tmp=$(( YESTERDAY_QUOTIENT * 100 + YESTERDAY_DECIMAL ))
