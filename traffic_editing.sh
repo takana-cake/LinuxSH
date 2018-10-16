@@ -6,9 +6,11 @@ DATE=`date +\%Y\%m\%d`
 ECHO="${DATE}"
 
 # リセット日
+#crontab
+#50 23 28-31 * * /usr/bin/test $(date -d '+1 day' +%d) -eq 1 && reboot
 RESETDATE=20
 if [ $(( `date +\%-d` )) -eq $(( RESETDATE )) ]; then
-	echo "${DATE}: reset 0 Days: TOTAL 0.0"
+	echo "${DATE}: reset 0 Days: TOTAL 0.0" > $ONEFILE
 fi
 
 # uptime取得
