@@ -40,12 +40,15 @@ done
 YESTERDAY_UPTIME=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 3` ))
 YESTERDAY_QUOTIENT=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 6 | cut -d "." -f 1` ))
 YESTERDAY_DECIMAL=$(( `tail -n 1 /var/log/daylog.one | cut -d " " -f 6 | cut -d "." -f 2` ))
-if [ $((YESTERDAY_UPTIME)) -gt $((UPTIME_DAY)) ]; then
+if [ $((YESTERDAY_UPTIME)) -ge $((UPTIME_DAY)) ]; then
 	TOTAL_tmp=$(( TOTAL_QUOTIENT * 100 + TOTAL_DECIMAL ))
 	YESTERDAY_tmp=$(( YESTERDAY_QUOTIENT * 100 + YESTERDAY_DECIMAL ))
 	TOTAL_tmp=$(( TOTAL_tmp + YESTERDAY_tmp ))
 	TOTAL_QUOTIENT=$(( TOTAL_tmp / 100 ))
 	TOTAL_DECIMAL=$(( TOTAL_tmp % 100 ))
+	if [ $TOTAL_DECIMAL -lt 10 ]; then
+		TOTAL_DECIMAL=0$TOTAL_DECIMAL
+	fi
 fi
 ECHO="${ECHO}: TOTAL ${TOTAL_QUOTIENT}.${TOTAL_DECIMAL} GB"
 
@@ -53,13 +56,17 @@ ECHO="${ECHO}: TOTAL ${TOTAL_QUOTIENT}.${TOTAL_DECIMAL} GB"
 COUNT=0
 TODAY_TMP=$(( ( TOTAL_QUOTIENT * 100 + TOTAL_DECIMAL ) - ( YESTERDAY_QUOTIENT * 100 + YESTERDAY_DECIMAL ) ))
 TODAY_QUOTIENT=$(( TODAY_TMP / 100 ))
-REMAINDER=$(( TODAY_TMP % 100 * 10 ))
-while [ $COUNT -lt 2 ]
-do
-	TODAY_DECIMAL=$(( TODAY_DECIMAL * 10 + REMAINDER / 100 ))
-	REMAINDER=$(( REMAINDER % 100 * 10 ))
-	COUNT=$(( COUNT + 1 ))
-done
+TODAY_DECIMAL=$(( TODAY_TMP % 100 ))
+if [ $TODAY_DECIMAL -lt 10 ]; then
+	TODAY_DECIMAL=0$TODAY_DECIMAL
+fi
+#REMAINDER=$(( TODAY_TMP % 100 * 10 ))
+#while [ $COUNT -lt 2 ]
+#do
+#	TODAY_DECIMAL=$(( TODAY_DECIMAL * 10 + REMAINDER / 100 ))
+#	REMAINDER=$(( REMAINDER % 100 * 10 ))
+#	COUNT=$(( COUNT + 1 ))
+#done
 ECHO="${ECHO}: TODAY ${TODAY_QUOTIENT}.${TODAY_DECIMAL} GB"
 
 echo $ECHO >> $LOGFILE
