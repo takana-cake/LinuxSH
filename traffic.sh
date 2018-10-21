@@ -8,18 +8,23 @@ ECHO="${DATE}"
 # リセット日
 #crontab
 #50 23 28-31 * * /usr/bin/test $(date -d '+1 day' +%d) -eq 1 && reboot
-RESETDATE=20
+RESETDATE=1
 if [ $(( `date +\%-d` )) -eq $(( RESETDATE )) ]; then
 	echo "${DATE}: reset 0 Days: TOTAL 0.0" > $ONEFILE
 fi
 
 # uptime取得
-UPTIME_DAY=$(( `uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 4` ))
+if [ `uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 5` = "days" ]; then
+	UPTIME_DAY=$(( `uptime | tr -s [:space:] | sed -e 's/,//g' | cut -d " " -f 4` ))
+else
+	UPTIME_DAY=0
+fi
 ECHO="${ECHO}: UPTIME ${UPTIME_DAY} Days"
+echo $ECHO
 
 # RX+TXをGBへ
-RX=`cat /proc/net/dev | sed -n 4p | tr -s [:space:] | cut -d " " -f 3`
-TX=`cat /proc/net/dev | sed -n 4p | tr -s [:space:] | cut -d " " -f 11`
+RX=`cat /proc/net/dev | grep eth0 | tr -s [:space:] | cut -d " " -f 3`
+TX=`cat /proc/net/dev | grep eth0 | tr -s [:space:] | cut -d " " -f 11`
 RXATX=$(( RX + TX ))
 GB=1073741824
 
@@ -62,13 +67,6 @@ TODAY_DECIMAL=$(( TODAY_TMP % 100 ))
 if [ $TODAY_DECIMAL -lt 10 ]; then
 	TODAY_DECIMAL=0$TODAY_DECIMAL
 fi
-#REMAINDER=$(( TODAY_TMP % 100 * 10 ))
-#while [ $COUNT -lt 2 ]
-#do
-#	TODAY_DECIMAL=$(( TODAY_DECIMAL * 10 + REMAINDER / 100 ))
-#	REMAINDER=$(( REMAINDER % 100 * 10 ))
-#	COUNT=$(( COUNT + 1 ))
-#done
 ECHO="${ECHO}: TODAY ${TODAY_QUOTIENT}.${TODAY_DECIMAL} GB"
 
 echo $ECHO >> $LOGFILE
