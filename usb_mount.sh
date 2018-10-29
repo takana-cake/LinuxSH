@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #/dev/disk/by-id/*part1
 #ここのやつを検知
