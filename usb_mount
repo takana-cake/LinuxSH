@@ -1,7 +1,0 @@
-#!/bin/sh
-
-/dev/disk/by-id/*part1
-ここのやつを検知
-
-常設はfstabへ、例外にする
-
