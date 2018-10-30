@@ -24,4 +24,7 @@ done
 #	DEV+=(`ls -l /dev/disk/by-id/$BYID[i] | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`)
 #	FS=`lsblk -O | grep $DEV[i] | tr -s [:space:] | cut -d " " -f 4`
 #done
+
+MNT=("h" "i" "j")
+
 mount -a
