@@ -10,8 +10,7 @@
 
 #ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9 >> ./usb_mount_exception.list
 EXCEPTION=`cat ./usb_mount_exception.list`
-LS=`ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9`
-BYID=(`diff <($EXCEPTION) <($LS) | grep ^\> | cut -d " " -f 2 | tr "\n" " "`)
+BYID=(`diff <($EXCEPTION) <(`ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9`) | grep ^\> | cut -d " " -f 2 | tr "\n" " "`)
 MNT=("h" "i" "j")
 
 #for item in ${BYID[@]}
