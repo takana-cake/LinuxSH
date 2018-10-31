@@ -10,21 +10,25 @@
 
 #ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9 >> ./usb_mount_exception.list
 EXCEPTION=`cat ./usb_mount_exception.list`
-
-BYID=(`diff <($EXCEPTION) <(ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9) | grep ^\> | cut -d " " -f 2 | tr "\n" " "`)
-for item in ${BYID[@]}; do
-	DEV=(`ls -l /dev/disk/by-id/$item | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`)
-	FS=`lsblk -O | grep $DEV | tr -s [:space:] | cut -d " " -f 4`
-	echo "/dev/${DEV} /mnt/${MNT} ${FS} default 0 0" >> /etc/fstab
-done
-
-#https://qiita.com/exy81/items/723184c0fcd7953d0f2c
-#for((i=0; i<${BYID[@]}; i++))
-#do
-#	DEV+=(`ls -l /dev/disk/by-id/$BYID[i] | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`)
-#	FS=`lsblk -O | grep $DEV[i] | tr -s [:space:] | cut -d " " -f 4`
-#done
-
+LS=`ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9`
+BYID=(`diff <($EXCEPTION) <($LS) | grep ^\> | cut -d " " -f 2 | tr "\n" " "`)
 MNT=("h" "i" "j")
 
-mount -a
+#for item in ${BYID[@]}
+#do
+#	DEV=(`ls -l /dev/disk/by-id/$item | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`)
+#	FS=`lsblk -O | grep $DEV | tr -s [:space:] | cut -d " " -f 4`
+#	echo "/dev/${DEV} /mnt/${MNT} ${FS} default 0 0" >> /etc/fstab
+#done
+#mount -a
+
+#https://qiita.com/exy81/items/723184c0fcd7953d0f2c
+for((i=0; i<${BYID[@]}; i++))
+do
+	DEV=(`ls -l /dev/disk/by-id/${BYID[i]} | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`)
+	FS=`lsblk -O | grep $DEV | tr -s [:space:] | cut -d " " -f 4`
+	mount /dev/${DEV} /mnt/${MNT[i]} ${FS} default 0 0
+done
+
+
+
