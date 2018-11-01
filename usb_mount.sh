@@ -7,6 +7,8 @@
 #usb_mount_exception.list
 #
 #swatchかなんかで監視して実行？
+#
+#sambaのconfigは？あらかじめ書いとくで
 
 #ls /dev/disk/by-id/ -l | sed -e "1d" | tr -s [:space:] | cut -d " " -f 9 >> ./usb_mount_exception.list
 EXCEPTION=(`cat ./usb_mount_exception.list`)
@@ -18,30 +20,30 @@ do
 	fi
 done
 MNT=("h" "i" "j")
-SAMBA="
-[${MNT[i]}]
-path = /mnt/${MNT[i]}
-guest ok = no
-read only = no
-browseable = yes
-inherit acls = yes
-inherit permissions = no
-ea support = no
-store dos attributes = no
-vfs objects =
-printable = no
-create mask = 0660
-force create mode = 0660
-directory mask = 0770
-force directory mode = 0770
-hide special files = yes
-follow symlinks = yes
-hide dot files = yes
-valid users =
-invalid users =
-read list =
-write list =
-"
+#SAMBA="
+#[${MNT[i]}]
+#path = /mnt/${MNT[i]}
+#guest ok = no
+#read only = no
+#browseable = yes
+#inherit acls = yes
+#inherit permissions = no
+#ea support = no
+#store dos attributes = no
+#vfs objects =
+#printable = no
+#create mask = 0660
+#force create mode = 0660
+#directory mask = 0770
+#force directory mode = 0770
+#hide special files = yes
+#follow symlinks = yes
+#hide dot files = yes
+#valid users =
+#invalid users =
+#read list =
+#write list =
+#"
 
 for((i=0; i<${#BYID[@]}; i++))
 do
