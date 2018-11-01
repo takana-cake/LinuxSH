@@ -18,10 +18,36 @@ do
 	fi
 done
 MNT=("h" "i" "j")
+SAMBA="
+[${MNT[i]}]
+path = /mnt/${MNT[i]}
+guest ok = no
+read only = no
+browseable = yes
+inherit acls = yes
+inherit permissions = no
+ea support = no
+store dos attributes = no
+vfs objects =
+printable = no
+create mask = 0660
+force create mode = 0660
+directory mask = 0770
+force directory mode = 0770
+hide special files = yes
+follow symlinks = yes
+hide dot files = yes
+valid users =
+invalid users =
+read list =
+write list =
+"
 
 for((i=0; i<${#BYID[@]}; i++))
 do
 	DEV=`ls -l /dev/disk/by-id/${BYID[i]} | grep .*sd[a-z][0-9] | sed 's/..\/..\///g' | awk '{print $NF}'`
 	FS=`lsblk -O | grep $DEV | tr -s [:space:] | cut -d " " -f 4`
 	mount /dev/${DEV} /mnt/${MNT[i]} ${FS} default 0 0
+	#echo "$SAMBA" 
 done
+
