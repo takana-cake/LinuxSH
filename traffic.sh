@@ -10,7 +10,7 @@ ECHO="${DATE}"
 #50 23 28-31 * * /usr/bin/test $(date -d '+1 day' +%d) -eq 02 && reboot
 #なんかうまく動かない。。。
 #00 00 01 * * sudo reboot
-RESETDATE=2
+RESETDATE=1
 if [ $(( `date +\%-d` )) -eq $(( RESETDATE )) ]; then
 	echo "${DATE}: reset 0 Days: TOTAL 0.0" > $ONEFILE
 fi
